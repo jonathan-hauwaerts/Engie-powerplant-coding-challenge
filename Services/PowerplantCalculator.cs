@@ -31,15 +31,16 @@ namespace Engie_powerplant_coding_challenge.Services
 
             for (int i = 0; i < powerplants.Count; i++)
             {
-
+                
                 Powerplant powerplant = powerplants[i];
 
+                
                 PowerplantProductionPlan powerplantProductionPlan = new PowerplantProductionPlan();
                 powerplantProductionPlan.Name = powerplant.Name;
                 powerplantProductionPlan.p = 0;
 
 
-                if (load > 0)
+                if (load > 0 && load > powerplant.Pmin)
                 {
                     //check to see what the min production is of the next powerplant
                     double pminNext = powerplant.Pmin;
@@ -55,14 +56,23 @@ namespace Engie_powerplant_coding_challenge.Services
                     {
                         powerplantProductionPlan.p = powerplant.Pmax;
                     }
-                    else
+                    else if (powerplant.Type != PowerplantType.windturbine )
                     {
                         powerplantProductionPlan.p = load;
                     }
 
                     //calculations for the production of windturbines
                     if (powerplant.Type == PowerplantType.windturbine)
+                    {
+
                         powerplantProductionPlan.p *= (payload.Fuels.wind / 100);
+                        if (powerplantProductionPlan.p > load)
+                        {
+                            powerplantProductionPlan.p = 0;
+                            continue;
+                        }
+                            
+                    }
 
                     load -= powerplantProductionPlan.p;
                 }
