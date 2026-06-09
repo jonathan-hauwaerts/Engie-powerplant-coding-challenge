@@ -1,6 +1,7 @@
 ﻿using Engie_powerplant_coding_challenge.Models;
 using Engie_powerplant_coding_challenge.Models.Enums;
 using Engie_powerplant_coding_challenge.Services.Interfaces;
+using System.Numerics;
 
 namespace Engie_powerplant_coding_challenge.Services
 {
@@ -13,9 +14,18 @@ namespace Engie_powerplant_coding_challenge.Services
 
         public List<PowerplantProductionPlan> GetProductionPlan(Payload payload)
         {
-            Single load = payload.Load;
+            double load = payload.Load;
 
-            List<Powerplant> powerplants = payload.Powerplants.OrderByDescending(x => x.Efficiency).ToList();
+            try
+            {
+                CalculateProductionCost(ref payload);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            List<Powerplant> powerplants = payload.Powerplants.OrderBy(x => x.ProductionCost).ToList();
 
             List<PowerplantProductionPlan> powerplantResults = new List<PowerplantProductionPlan>();
 
@@ -32,14 +42,14 @@ namespace Engie_powerplant_coding_challenge.Services
                 if (load > 0)
                 {
                     //check to see what the min production is of the next powerplant
-                    Single pminNext = powerplant.Pmin;
+                    double pminNext = powerplant.Pmin;
                     if (i + 1 < powerplants.Count)
                         pminNext = powerplants[i + 1].Pmin;
 
                     //Check to see if the production we'll use in this powerplant leaves enough open for the next powerplant
                     if (load - powerplant.Pmax < pminNext && load - powerplant.Pmax > 0)
                     {
-                        powerplantProductionPlan.p = load - 120;
+                        powerplantProductionPlan.p = load - pminNext;
                     }
                     else if (load > powerplant.Pmax)
                     {
@@ -51,22 +61,38 @@ namespace Engie_powerplant_coding_challenge.Services
                     }
 
                     //calculations for the production of windturbines
-                    switch (powerplant.Type)
-                    {
-                        case PowerplantType.windturbine:
-                            load -= powerplantProductionPlan.p * (payload.Fuels.wind / 100);
-                            break;
-                        default:
-                            load -= powerplantProductionPlan.p;
-                            break;
-                    }
+                    if (powerplant.Type == PowerplantType.windturbine)
+                        powerplantProductionPlan.p *= (payload.Fuels.wind / 100);
+
+                    load -= powerplantProductionPlan.p;
                 }
 
 
                 powerplantResults.Add(powerplantProductionPlan);
             }
 
+            if (load > 0)
+                throw new InvalidOperationException("No productionplan possible");
+
             return powerplantResults;
+        }
+
+        private void CalculateProductionCost (ref Payload payload)
+        {
+            foreach (Powerplant powerplant in payload.Powerplants.Where(x => x.Type != PowerplantType.windturbine))
+            {
+                switch (powerplant.Type)
+                {
+                    case PowerplantType.gasfired:
+                        powerplant.ProductionCost = payload.Fuels.gas / powerplant.Efficiency + (0.3 * payload.Fuels.co2) / powerplant.Efficiency;
+                        break;
+                    case PowerplantType.turbojet:
+                        powerplant.ProductionCost = payload.Fuels.kerosine / powerplant.Efficiency;
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
         }
     }
 }

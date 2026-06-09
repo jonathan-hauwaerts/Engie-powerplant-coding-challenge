@@ -20,9 +20,22 @@ namespace Engie_powerplant_coding_challenge.Controllers
         }
 
         [HttpPost(Name = "productionplan")]
-        public IEnumerable<PowerplantProductionPlan> productionplan(Payload payload)
+        public IActionResult productionplan([FromBody]Payload payload)
         {
-            return _powerplantCalculator.GetProductionPlan(payload);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("modelstate is invalid");
+            }
+
+            try
+            {
+                return Ok(_powerplantCalculator.GetProductionPlan(payload));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+             
         }
     }
 }

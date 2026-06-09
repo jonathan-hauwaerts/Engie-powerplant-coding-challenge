@@ -1,5 +1,8 @@
+using Engie_powerplant_coding_challenge.Helpers;
 using Engie_powerplant_coding_challenge.Services;
 using Engie_powerplant_coding_challenge.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IPowerplantCalculator, PowerplantCalculator>();
+builder.Services.AddControllers().AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new PowerplantTypeConverter()));
 
 var app = builder.Build();
 
@@ -20,6 +24,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<JsonExceptionMiddleware>();
 
 app.MapControllers();
 

@@ -3,6 +3,6 @@
     public class PowerplantProductionPlan
     {
         public string Name { get; set; }
-        public Single p { get; set; }
+        public double p { get; set; }
     }
 }
