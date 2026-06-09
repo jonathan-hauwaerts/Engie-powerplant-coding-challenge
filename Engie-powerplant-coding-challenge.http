@@ -1,0 +1,6 @@
+@Engie_powerplant_coding_challenge_HostAddress = http://localhost:5176
+
+GET {{Engie_powerplant_coding_challenge_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
