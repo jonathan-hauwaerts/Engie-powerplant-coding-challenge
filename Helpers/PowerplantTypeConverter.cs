@@ -13,7 +13,6 @@ namespace Engie_powerplant_coding_challenge.Helpers
             if (Enum.TryParse<PowerplantType>(value, true, out var result))
                 return result;
 
-           
             throw new JsonException(
                 $"Invalid plant type '{value}'. Allowed values: {string.Join(", ", Enum.GetNames<PowerplantType>())}");
         }

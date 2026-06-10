@@ -18,7 +18,7 @@ namespace Engie_powerplant_coding_challenge.Services
 
             powerplants.Where(x => x.Type == PowerplantType.windturbine).ToList().ForEach(x => x.Pmax *= payload.Fuels.Wind / 100);
 
-            return CreateProductionplan(powerplants, payload.Load, payload.Fuels.Wind);
+            return CreateProductionplan(powerplants, payload.Load);
         }
 
         private List<Powerplant> CalculateProductionCost(List<Powerplant> powerplants, Fuel fuels)
@@ -42,7 +42,7 @@ namespace Engie_powerplant_coding_challenge.Services
             return powerplants;
         }
 
-        private List<PowerplantProductionPlan> CreateProductionplan(List<Powerplant> powerplants, double load, double wind)
+        private List<PowerplantProductionPlan> CreateProductionplan(List<Powerplant> powerplants, double load)
         {
 
             double remainingLoad = load;
