@@ -8,17 +8,12 @@ namespace Engie_powerplant_coding_challenge.Models
 {
     public class Powerplant
     {
-        [Required]
         public required string Name { get; set; }
         [JsonConverter(typeof(PowerplantTypeConverter))]
-        [Required]
-        public PowerplantType Type { get; set; }
-        [Required]
-        public double Efficiency { get; set; }
-        [Required]
-        public double Pmin { get; set; }
-        [Required]
-        public double Pmax { get; set; }
+        public required PowerplantType Type { get; set; }
+        public required double Efficiency { get; set; }
+        public required double Pmin { get; set; }
+        public required double Pmax { get; set; }
         public double ProductionCost { get; set; }
     }
 }

@@ -6,18 +6,15 @@ namespace Engie_powerplant_coding_challenge.Models
 {
     public class Fuel
     {
-        [Required]
+        
         [JsonPropertyName("gas(euro/MWh)")]
-        public double Gas { get; set; }
-        [Required]
+        public required double Gas { get; set; }
         [JsonPropertyName("kerosine(euro/MWh)")]
-        public double Kerosine { get; set; }
-        [Required]
+        public required double Kerosine { get; set; }
         [JsonPropertyName("co2(euro/ton)")]
-        public double Co2 { get; set; }
-        [Required]
+        public required double Co2 { get; set; }
         [Range(0, 100)]
         [JsonPropertyName("wind(%)")]
-        public double Wind { get; set; }
+        public required double Wind { get; set; }
     }
 }
