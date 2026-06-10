@@ -1,17 +1,23 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Engie_powerplant_coding_challenge.Models
 {
     public class Fuel
     {
+        [Required]
         [JsonPropertyName("gas(euro/MWh)")]
-        public Single gas { get; set; }
+        public double Gas { get; set; }
+        [Required]
         [JsonPropertyName("kerosine(euro/MWh)")]
-        public Single kerosine { get; set; }
+        public double Kerosine { get; set; }
+        [Required]
         [JsonPropertyName("co2(euro/ton)")]
-        public Single co2 { get; set; }
+        public double Co2 { get; set; }
+        [Required]
+        [Range(0, 100)]
         [JsonPropertyName("wind(%)")]
-        public Single wind { get; set; }
+        public double Wind { get; set; }
     }
 }

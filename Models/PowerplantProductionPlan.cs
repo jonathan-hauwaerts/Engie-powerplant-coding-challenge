@@ -2,7 +2,7 @@
 {
     public class PowerplantProductionPlan
     {
-        public string Name { get; set; }
-        public double p { get; set; }
+        public required string Name { get; set; }
+        public double Production { get; set; }
     }
 }
