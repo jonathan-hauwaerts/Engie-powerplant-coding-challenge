@@ -20,7 +20,7 @@ namespace Engie_powerplant_coding_challenge.Controllers
         }
 
         [HttpPost(Name = "productionplan")]
-        public IActionResult productionplan([FromBody]Payload payload)
+        public IActionResult Productionplan([FromBody]Payload payload)
         {
             if (!ModelState.IsValid)
             {
