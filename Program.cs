@@ -1,8 +1,6 @@
 using Engie_powerplant_coding_challenge.Helpers;
 using Engie_powerplant_coding_challenge.Services;
 using Engie_powerplant_coding_challenge.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 

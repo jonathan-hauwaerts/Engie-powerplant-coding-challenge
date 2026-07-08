@@ -14,6 +14,7 @@ namespace Engie_powerplant_coding_challenge.Services
 
         public List<PowerplantProductionPlan> GetProductionPlan(Payload payload)
         {
+            //
             List<Powerplant> powerplants = CalculateProductionCost(payload.Powerplants, payload.Fuels).OrderBy(x => x.ProductionCost).ToList();
 
             powerplants.Where(x => x.Type == PowerplantType.windturbine).ToList().ForEach(x => x.Pmax *= payload.Fuels.Wind / 100);
